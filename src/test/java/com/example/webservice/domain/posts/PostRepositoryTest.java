@@ -1,5 +1,7 @@
 package com.example.webservice.domain.posts;
 
+import com.example.webservice.dto.posts.PostSaveRequestDto;
+import com.example.webservice.service.PostService;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +19,8 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PostRepositoryTest {
+    @Autowired
+    private PostService postService;
 
     @Autowired
     PostsRepository postsRepository;
@@ -64,5 +69,24 @@ public class PostRepositoryTest {
 
         assertThat(posts.getCreatedDate(), is(posts.getCreatedDate()));
         assertThat(posts.getModifiedDate(), is(posts.getModifiedDate()));
+    }
+
+    @Test
+    public void dto데이터가_posts테이블에_저장된다(){
+        //given
+        PostSaveRequestDto dto = PostSaveRequestDto.builder()
+                .author("soojung")
+                .content("테스트")
+                .title("테스트 타이틀")
+                .build();
+        // when
+        postService.save(dto);
+
+        //then
+        Posts posts = postsRepository.findAll().get(2);
+        assertThat(posts.getAuthor()).isEqualTo(dto.getAuthor());
+        assertThat(posts.getContent()).isEqualTo(dto.getContent());
+        assertThat(posts.getTitle()).isEqualTo(dto.getTitle());
+
     }
 }
