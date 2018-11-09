@@ -1,14 +1,12 @@
 package com.example.webservice.web;
 
+import com.example.webservice.domain.posts.Posts;
 import com.example.webservice.domain.posts.PostsRepository;
 import com.example.webservice.dto.posts.PostSaveRequestDto;
 import com.example.webservice.dto.posts.PostsMainResponseDto;
 import com.example.webservice.service.PostService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class WebRestController {
 
-    private PostsRepository postsRepository;
     private PostService postService;
 
     @GetMapping("/hello")
@@ -30,7 +27,22 @@ public class WebRestController {
     }
 
     @GetMapping("/getPostList")
-    public List<PostsMainResponseDto> getList(){
+    public List<PostsMainResponseDto> getList() {
         return postService.findAllDesc();
+    }
+
+    @GetMapping("/findPost/{author}")
+    public Posts findByAuthor(@PathVariable String author) {
+        return postService.findByAuthor(author);
+    }
+
+    @DeleteMapping("/deletePost/{id}")
+    public void deletePost(@PathVariable long id) {
+        postService.deleteById(id);
+    }
+
+    @DeleteMapping("/deleteAll")
+    public void deleteAllPost(long id) {
+        postService.deleteAll();
     }
 }
