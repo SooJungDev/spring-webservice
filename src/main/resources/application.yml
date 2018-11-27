@@ -21,3 +21,17 @@ spring:
   redis:
     host: localhost
     port: 6379
+
+#mysql
+---
+spring:
+  profiles: mysql
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost:3306/test?useUnicode=true&charaterEncoding=utf-8
+      username: root
+      password: root1234
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: localhost
+    port: 6379
