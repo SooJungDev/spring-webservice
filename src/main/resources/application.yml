@@ -5,6 +5,10 @@ spring:
   profiles:
     active: local
 
+sprin.batch.job.names: ${job.name:NONE}
+
+
+
 #local 환경
 ---
 spring:
