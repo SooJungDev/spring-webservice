@@ -5,10 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,9 +21,23 @@ public class Academy {
     private String name;
     private String address;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "academy")
+    private List<Student> students = new ArrayList<>();
+
     @Builder
-    public Academy(String name,String address){
+    public Academy(String name, String address) {
         this.name = name;
         this.address = address;
+    }
+
+    public void addStudent(List<Student> students) {
+        for (Student student : students) {
+            addStudent(student);
+        }
+    }
+
+    public void addStudent(Student student) {
+        this.students.add(student);
+        student.setAcademy(this);
     }
 }
